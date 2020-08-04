@@ -6,6 +6,7 @@ namespace GildedRose;
 
 use GildedRose\Items\AgedBrie;
 use GildedRose\Items\Backstage;
+use GildedRose\Items\Conjured;
 use GildedRose\Items\DefaultItem;
 use GildedRose\Items\Sulfuras;
 
@@ -16,10 +17,14 @@ final class GildedRose
      */
     private $items;
 
+    /**
+     * @var string[]
+     */
     private static $itemClasses = [
         'Aged Brie' => AgedBrie::class,
         'Backstage passes to a TAFKAL80ETC concert' => Backstage::class,
         'Sulfuras, Hand of Ragnaros' => Sulfuras::class,
+        'Conjured Mana Cake' => Conjured::class,
     ];
 
     /**
@@ -37,6 +42,7 @@ final class GildedRose
                 case 'Aged Brie':
                 case 'Backstage passes to a TAFKAL80ETC concert':
                 case 'Sulfuras, Hand of Ragnaros':
+                case 'Conjured Mana Cake':
                     $newItem = new self::$itemClasses[$item->name]($item);
                     $newItem->updateQuality();
                     break;
