@@ -8,24 +8,24 @@ class Backstage extends DefaultItem
 {
     public function updateQuality(): void
     {
-        ++$this->item->quality;
+        $this->increaseQuality();
 
         if ($this->item->sell_in <= 10) {
-            ++$this->item->quality;
+            $this->increaseQuality();
         }
 
         if ($this->item->sell_in <= 5) {
-            ++$this->item->quality;
+            $this->increaseQuality();
         }
 
         if ($this->item->quality > 50) {
-            $this->item->quality = 50;
+            $this->setQuality(50);
         }
 
-        --$this->item->sell_in;
+        $this->decreaseSellIn();
 
         if ($this->item->sell_in < 0) {
-            $this->item->quality = 0;
+            $this->setQuality(0);
         }
     }
 }

@@ -13,7 +13,6 @@ class DefaultItem
      */
     protected $item;
 
-
     public function __construct(Item $item)
     {
         $this->item = $item;
@@ -22,13 +21,34 @@ class DefaultItem
     public function updateQuality(): void
     {
         if ($this->item->quality > 0) {
-            --$this->item->quality;
+            $this->decreaseQuality();
         }
 
-        --$this->item->sell_in;
+        $this->decreaseSellIn();
 
         if ($this->item->sell_in < 0 && $this->item->quality > 0) {
-            --$this->item->quality;
+            $this->decreaseQuality();
         }
+    }
+
+    public function setQuality(int $quality): void
+    {
+        $this->item->quality = $quality;
+    }
+
+    public function increaseQuality(): void
+    {
+        ++$this->item->quality;
+    }
+
+
+    public function decreaseQuality(int $count = 1): void
+    {
+        $this->item->quality -= $count;
+    }
+
+    public function decreaseSellIn(): void
+    {
+        --$this->item->sell_in;
     }
 }
