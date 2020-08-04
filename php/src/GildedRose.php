@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace GildedRose;
 
+use GildedRose\Items\AgedBrie;
+use GildedRose\Items\Backstage;
+use GildedRose\Items\DefaultItem;
+use GildedRose\Items\Sulfuras;
+
 final class GildedRose
 {
     /**
@@ -11,6 +16,15 @@ final class GildedRose
      */
     private $items;
 
+    private static $itemClasses = [
+        'Aged Brie' => AgedBrie::class,
+        'Backstage passes to a TAFKAL80ETC concert' => Backstage::class,
+        'Sulfuras, Hand of Ragnaros' => Sulfuras::class,
+    ];
+
+    /**
+     * @param Item[] $items
+     */
     public function __construct(array $items)
     {
         $this->items = $items;
@@ -21,50 +35,14 @@ final class GildedRose
         foreach ($this->items as $item) {
             switch ($item->name) {
                 case 'Aged Brie':
-                    ++$item->quality;
-                    --$item->sell_in;
-
-                    if ($item->sell_in < 0) {
-                        ++$item->quality;
-                    }
-
-                    if ($item->quality > 50) {
-                        $item->quality = 50;
-                    }
-                    break;
                 case 'Backstage passes to a TAFKAL80ETC concert':
-                    ++$item->quality;
-
-                    if ($item->sell_in <= 10) {
-                        ++$item->quality;
-                    }
-
-                    if ($item->sell_in <= 5) {
-                        ++$item->quality;
-                    }
-
-                    if ($item->quality > 50) {
-                        $item->quality = 50;
-                    }
-
-                    --$item->sell_in;
-
-                    if ($item->sell_in < 0) {
-                        $item->quality = 0;
-                    }
-                    break;
                 case 'Sulfuras, Hand of Ragnaros':
+                    $newItem = new self::$itemClasses[$item->name]($item);
+                    $newItem->updateQuality();
                     break;
                 default:
-                    if ($item->quality > 0) {
-                        --$item->quality;
-                    }
-
-                    --$item->sell_in;
-
-                    if ($item->sell_in < 0 && $item->quality > 0) {
-                        --$item->quality;
-                    }
+                    $newItem = new DefaultItem($item);
+                    $newItem->updateQuality();
                     break;
             }
         }
