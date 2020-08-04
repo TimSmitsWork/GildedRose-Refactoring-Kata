@@ -8,6 +8,12 @@ use GildedRose\Item;
 
 class DefaultItem
 {
+    public const MAX_QUALITY = 50;
+
+    public const MIN_QUALITY = 0;
+
+    public const MIN_SELL_IN = 0;
+
     /**
      * @var Item
      */
@@ -20,13 +26,13 @@ class DefaultItem
 
     public function updateQuality(): void
     {
-        if ($this->item->quality > 0) {
+        if ($this->item->quality > self::MIN_QUALITY) {
             $this->decreaseQuality();
         }
 
         $this->decreaseSellIn();
 
-        if ($this->item->sell_in < 0 && $this->item->quality > 0) {
+        if ($this->item->sell_in < self::MIN_SELL_IN && $this->item->quality > self::MIN_QUALITY) {
             $this->decreaseQuality();
         }
     }
@@ -40,7 +46,6 @@ class DefaultItem
     {
         ++$this->item->quality;
     }
-
 
     public function decreaseQuality(int $count = 1): void
     {

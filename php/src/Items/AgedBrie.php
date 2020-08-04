@@ -11,12 +11,12 @@ class AgedBrie extends DefaultItem
         $this->increaseQuality();
         $this->decreaseSellIn();
 
-        if ($this->item->sell_in < 0) {
+        if ($this->item->sell_in < self::MIN_SELL_IN) {
             $this->increaseQuality();
         }
 
-        if ($this->item->quality > 50) {
-            $this->setQuality(50);
+        if ($this->item->quality > self::MAX_QUALITY) {
+            $this->setQuality(self::MAX_QUALITY);
         }
     }
 }
